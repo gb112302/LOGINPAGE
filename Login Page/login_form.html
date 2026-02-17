@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login Form</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="login-container">
+      <form action="" id="loginForm" novalidate>
+        <h1><b>Login To Your Account</b></h1>
+
+        <div class="input-group">
+          <label for="username">Username</label>
+          <input type="text" id="username" required placeholder="Username" />
+          <span class="error-message">Username is required.</span>
+        </div>
+
+        <div class="input-group">
+          <label for="password">Password</label>
+          <input
+            type="password"
+            id="password"
+            required
+            minlength="8"
+            maxlength="16"
+            placeholder="Password"
+          />
+          <span class="error-message">Password is required.</span>
+        </div>
+
+        <div class="auth-type">
+          <label><b>Authentication Type:</b></label>
+          <br />
+          <input
+            type="radio"
+            name="auth_type"
+            value="user"
+            required
+            id="auth_user"
+          />
+          <label for="auth_user">As User</label>
+
+          <input
+            type="radio"
+            name="auth_type"
+            value="company"
+            id="auth_company"
+          />
+          <label for="auth_company">As Company</label>
+          <span
+            class="error-message"
+            id="auth-type-error"
+            style="display: block; color: red; font-size: 0.8em"
+          ></span>
+        </div>
+        <br />
+        <input type="submit" value="Login" />
+        <br /><br />
+        <div class="register-link">
+          <a
+            href="register_form.html"
+            style="
+              background: none;
+              border: none;
+              color: #000000;
+              font-size: 12px;
+              text-transform: none;
+              margin: 0;
+              padding: 0;
+            "
+            >Register new account</a
+          >
+        </div>
+      </form>
+    </div>
+    <script>
+      const form = document.getElementById("loginForm");
+      const usernameInput = document.getElementById("username");
+      const passwordInput = document.getElementById("password");
+
+      function setError(input, message) {
+        const inputGroup = input.parentElement;
+        const errorDisplay = inputGroup.querySelector(".error-message");
+
+        if (message) {
+          errorDisplay.innerText = message;
+        }
+
+        inputGroup.classList.add("error");
+        inputGroup.classList.remove("success");
+      }
+
+      function setSuccess(input) {
+        const inputGroup = input.parentElement;
+        inputGroup.classList.remove("error");
+        inputGroup.classList.add("success");
+      }
+
+      function validateInput(input) {
+        const value = input.value.trim();
+        let isValid = true;
+
+        if (input === usernameInput) {
+          if (value === "") {
+            setError(input, "Username is required");
+            isValid = false;
+          } else {
+            setSuccess(input);
+          }
+        } else if (input === passwordInput) {
+          if (value === "") {
+            setError(input, "Password is required");
+            isValid = false;
+          } else {
+            setSuccess(input);
+          }
+        }
+
+        return isValid;
+      }
+
+      // Add event listeners
+      [usernameInput, passwordInput].forEach((input) => {
+        input.addEventListener("input", () => validateInput(input));
+        input.addEventListener("blur", () => validateInput(input));
+      });
+
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        let isFormValid = true;
+
+        // Validate text inputs
+        [usernameInput, passwordInput].forEach((input) => {
+          if (!validateInput(input)) {
+            isFormValid = false;
+          }
+        });
+
+        // Validate radio buttons
+        const authTypeInputs = document.getElementsByName("auth_type");
+        let authTypeSelected = false;
+        for (let i = 0; i < authTypeInputs.length; i++) {
+          if (authTypeInputs[i].checked) {
+            authTypeSelected = true;
+            break;
+          }
+        }
+
+        const authError = document.getElementById("auth-type-error");
+        if (!authTypeSelected) {
+          authError.innerText = "Please select an authentication type";
+          isFormValid = false;
+        } else {
+          authError.innerText = "";
+        }
+
+        if (isFormValid) {
+          alert("Login successful!");
+          // Here you would typically submit the form to a server
+          // form.submit();
+        }
+      });
+    </script>
+  </body>
+</html>

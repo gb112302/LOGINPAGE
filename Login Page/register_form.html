@@ -1,0 +1,414 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register Form</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="register-container">
+      <form action="" id="registerForm" novalidate>
+        <h1><b>Register Form</b></h1>
+        
+        <div class="input-group">
+            <label for="name">Name:</label>
+            <input
+              type="text"
+              id="name"
+              minlength="3"
+            
+              placeholder="Enter your name"
+            />
+            <span class="error-message">Name is required and must be at least 2 characters.</span>
+        </div>
+
+        <div class="input-group">
+            <label for="dob">Date of Birth:</label>
+            <input
+              type="date"
+              id="dob"
+              
+              placeholder="Enter your date of birth"
+            />
+            <span class="error-message">Date of Birth is required.</span>
+        </div>
+
+        <div class="input-group">
+            <label for="age">Age:</label>
+            <input
+              type="text"
+              id="age"
+              placeholder="Age will be calculated automatically"
+              readonly
+            />
+        </div>
+
+        <div class="input-group">
+            <label for="email">Email Address:</label>
+            <input type="email" id="email"  placeholder="Enter your email">
+            <span class="error-message">Please enter a valid email address.</span>
+        </div>
+
+        <div class="input-group">
+            <label for="phone">Phone:</label>
+            <input type="number" id="phone"  placeholder="Enter your phone" />
+            <span class="error-message">Phone number is required.</span>
+        </div>
+
+        <label for="person type"><b>Person Type:</b></label>
+        <div class="radio-group">
+          <input
+            type="radio"
+            name="person type"
+            value="student"
+            id="pt_student"
+            
+          />
+          <label for="pt_student">Student</label>
+          <input
+            type="radio"
+            name="person type"
+            value="employee"
+            id="pt_employee"
+          />
+          <label for="pt_employee">Employee</label>
+          <input type="radio" name="person type" value="both" id="pt_both" />
+          <label for="pt_both">Both</label>
+          <span class="error-message">Person Type is required.</span>
+        </div>
+
+        <label for="gender"><b>Gender:</b></label>
+        <div class="radio-group">
+          <input type="radio" name="gender" value="male" id="g_male"  />
+          <label for="g_male">Male</label>
+          <input type="radio" name="gender" value="female" id="g_female" />
+          <label for="g_female">Female</label>
+          <input type="radio" name="gender" value="other" id="g_other" />
+          <label for="g_other">Other</label>
+          <span class="error-message">Gender is required.</span>
+        </div>
+
+        <div class="input-group">
+            <label for="address">Address:</label>
+            <input type="text" id="address"  placeholder="Enter your address" />
+            <span class="error-message">Address is required.</span>
+        </div>
+
+        <div class="input-group">
+            <label for="city">City:</label>
+            <input type="text" id="city"  placeholder="Enter city" />
+            <span class="error-message">City is required.</span>
+        </div>
+
+        <div class="input-group">
+            <label for="state">State:</label>
+            <input type="text" id="state"  placeholder="Enter state" />
+            <span class="error-message">State is required.</span>
+        </div>
+        
+        <div class="input-group">
+            <label for="pincode">Pincode:</label>
+            <input type="number" id="pincode"  placeholder="Enter your pincode" />
+             <span class="error-message">Pincode is required.</span>
+        </div>
+
+        <label for="hobbies"><b>Hobbies:</b></label>
+<div id="hobbies-container">
+            <div class="hobby-input-wrapper">
+                <input type="text" name="hobbies[]" placeholder="Enter your hobby" />
+                <button type="button" class="add-hobby-btn" onclick="addHobby()">+</button>
+            </div>
+        </div>
+        
+        <div class="input-group">
+            <label for="username">Create User Name:</label>
+            <input type="text" id="username"  placeholder="Please enter your user name" />
+            <span class="error-message">Username is required.</span>
+        </div>
+
+        <div class="input-group">
+            <label for="password">Password:</label>
+            <input
+              type="password"
+              id="password"
+              
+              minlength="8"
+              maxlength="16"
+              placeholder="Please enter password"
+            />
+            <span class="error-message">Password must be between 8 and 16 characters.</span>
+        </div>
+        
+        <div class="input-group">
+            <label for="confirm_password">Confirm Password:</label>
+            <input
+              type="password"
+              id="confirm_password"
+              
+              minlength="8"
+              maxlength="16"
+              placeholder="Please re enter password"
+            />
+            <span class="error-message">Passwords do not match.</span>
+        </div>
+
+        <input type="submit" value="Register" />
+        <input type="reset" value="Reset" />
+        <input type="button" value="Cancel" />
+        <br />
+        <a
+          href="login_form.html"
+          style="
+            background: none;
+            border: none;
+            color: #080505;
+            font-size: 12px;
+            text-transform: none;
+          "
+          >Go to Login</a
+        >
+      </form>
+    </div>
+    </b>    
+    <script>
+      const form = document.getElementById('registerForm');
+      const nameInput = document.getElementById('name');
+      const dobInput = document.getElementById('dob');
+      const emailInput = document.getElementById('email');
+      const phoneInput = document.getElementById('phone');
+      const addressInput = document.getElementById('address');
+        const cityInput = document.getElementById('city');
+        const stateInput = document.getElementById('state');
+        const pincodeInput = document.getElementById('pincode');
+      const usernameInput = document.getElementById('username');
+      const passwordInput = document.getElementById('password');
+      const confirmPasswordInput = document.getElementById('confirm_password');
+
+      // Calculate age
+      dobInput.addEventListener("change", function () {
+        const dob = new Date(this.value);
+        const today = new Date();
+        if(isNaN(dob.getTime())) return; // invalid date
+
+        let years = today.getFullYear() - dob.getFullYear();
+        let months = today.getMonth() - dob.getMonth();
+        let days = today.getDate() - dob.getDate();
+
+        if (months < 0 || (months === 0 && today.getDate() < dob.getDate())) {
+          years--;
+          months += 12;
+          days += 30;
+        }
+
+        if (today.getDate() < dob.getDate()) {
+          months--;
+          days += 30;
+        }
+
+        document.getElementById("age").value =
+          `${years} Years, ${months} Months, ${days} Days`;
+          
+          validateInput(dobInput); // Validate on change
+      });
+
+      function setError(input, message) {
+          const inputGroup = input.parentElement;
+          const errorDisplay = inputGroup.querySelector('.error-message');
+          
+          if(message) {
+            errorDisplay.innerText = message;
+          }
+          
+          inputGroup.classList.add('error');
+          inputGroup.classList.remove('success');
+      }
+
+      function setSuccess(input) {
+          const inputGroup = input.parentElement;
+          inputGroup.classList.remove('error');
+          inputGroup.classList.add('success');
+      }
+
+      function validateInput(input) {
+          const value = input.value.trim();
+          let isValid = true;
+          
+          if (input === nameInput) {
+               if(value === '' || value.length < 3) {
+                   setError(input, 'Name must be at least 3 characters');
+                   isValid = false;
+               } else {
+                   setSuccess(input);
+               }
+          } else if (input === dobInput) {
+               if(value === '') {
+                   setError(input, 'Date of Birth is required');
+                   isValid = false;
+               } else {
+                   setSuccess(input);
+               }
+          } else if (input === emailInput) {
+               const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+               if (!emailRegex.test(value)) {
+                    setError(input, 'Provide a valid email address');
+                    isValid = false;
+               } else {
+                   setSuccess(input);
+               }
+          } else if (input === phoneInput) {
+              if (value === '') {
+                  setError(input, 'Phone number is required');
+                  isValid = false;
+              } else {
+                  setSuccess(input);
+              }
+          } else if (input === addressInput) {
+               if(value === '') {
+                   setError(input, 'Address is required');
+                   isValid = false;
+               } else {
+                   setSuccess(input);
+               }
+          }
+          else if (input === cityInput) {
+               if(value === '') {
+                   setError(input, 'City is required');
+                   isValid = false;
+               } else {
+                   setSuccess(input);
+               }
+          }
+          else if (input === stateInput) {
+               if(value === '') {
+                   setError(input, 'State is required');
+                   isValid = false;
+               } else {
+                   setSuccess(input);
+               }
+          }
+          else if (input === pincodeInput) {
+               if(value === '') {
+                   setError(input, 'Pincode is required');
+                   isValid = false;
+               } else {
+                   setSuccess(input);
+               }
+          }
+           else if (input === usernameInput) {
+               if(value === '') {
+                    setError(input, 'Username is required');
+                    isValid = false;
+               } else {
+                   setSuccess(input);
+               }
+          } else if (input === passwordInput) {
+               if (value.length < 8 || value.length > 16) {
+                   setError(input, 'Password must be 8-16 characters');
+                   isValid = false;
+               } else {
+                   setSuccess(input);
+               }
+               // Re-validate confirm password if it has a value
+               if (confirmPasswordInput.value.trim() !== '') {
+                   validateInput(confirmPasswordInput);
+               }
+
+          } else if (input === confirmPasswordInput) {
+               if (value !== passwordInput.value.trim()) {
+                   setError(input, "Passwords doesn't match");
+                   isValid = false;
+               } else {
+                   setSuccess(input);
+               }
+          } else if (input.name === 'person type') {
+                const isChecked = Array.from(document.getElementsByName('person type')).some(radio => radio.checked);
+                if (!isChecked) {
+                    setError(input, 'Person Type is required');
+                    isValid = false;
+                } else {
+                    setSuccess(input);
+                }
+           } else if (input.name === 'gender') {
+                const isChecked = Array.from(document.getElementsByName('gender')).some(radio => radio.checked);
+                if (!isChecked) {
+                    setError(input, 'Gender is required');
+                    isValid = false;
+                } else {
+                    setSuccess(input);
+                }
+           }
+          
+          return isValid;
+      }
+
+      // Add event listeners for real-time validation
+      [nameInput, dobInput, emailInput, phoneInput, addressInput, cityInput, stateInput, pincodeInput, usernameInput, 
+      passwordInput, confirmPasswordInput].forEach(input => {
+          input.addEventListener('input', () => validateInput(input));
+          input.addEventListener('blur', () => validateInput(input));
+      });
+
+      // Event listeners for radio buttons
+      const personTypeInputs = document.getElementsByName('person type');
+      personTypeInputs.forEach(input => {
+          input.addEventListener('change', () => validateInput(input));
+      });
+
+      const genderInputs = document.getElementsByName('gender');
+      genderInputs.forEach(input => {
+          input.addEventListener('change', () => validateInput(input));
+      });
+
+      form.addEventListener('submit', function (e) {
+          e.preventDefault();
+          
+          let isFormValid = true;
+          
+          const inputs = [
+              nameInput, dobInput, emailInput, phoneInput, addressInput, 
+              cityInput, stateInput, pincodeInput, usernameInput, 
+              passwordInput, confirmPasswordInput,
+              personTypeInputs[0], genderInputs[0] // Pass one from each group to trigger validation
+          ];
+          
+          inputs.forEach(input => {
+              if(!validateInput(input)) {
+                  isFormValid = false;
+              }
+          });
+
+          if (isFormValid) {
+               alert("Registration successful! Redirecting to login page...");
+               window.location.href = "login_form.html";
+          }
+      });
+
+      function addHobby() {
+          const container = document.getElementById('hobbies-container');
+          const wrapper = document.createElement('div');
+          wrapper.className = 'hobby-input-wrapper';
+          
+          const input = document.createElement('input');
+          input.type = 'text';
+          input.name = 'hobbies[]';
+          input.placeholder = 'Enter another hobby';
+          
+          const removeBtn = document.createElement('button');
+          removeBtn.type = 'button';
+          removeBtn.className = 'remove-hobby-btn';
+          removeBtn.innerText = '-';
+          removeBtn.onclick = function() { removeHobby(this); };
+
+          wrapper.appendChild(input);
+          wrapper.appendChild(removeBtn);
+          container.appendChild(wrapper);
+      }
+
+      function removeHobby(button) {
+          const wrapper = button.parentElement;
+          wrapper.remove();
+      }
+    </script>
+  </body>
+</html>
