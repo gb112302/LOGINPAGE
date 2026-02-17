@@ -1,0 +1,505 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Homepage</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        background-color: #f5f5f5;
+      }
+      h1 {
+        color: #333;
+        text-align: center;
+      }
+      .table-container {
+        overflow-x: auto;
+        overflow-y: auto;
+        max-height: 500px;
+        margin: 20px 0;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+      }
+
+      /* Custom scrollbar styling */
+      .table-container::-webkit-scrollbar {
+        width: 10px;
+        height: 10px;
+      }
+
+      .table-container::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 5px;
+      }
+
+      .table-container::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 5px;
+      }
+
+      .table-container::-webkit-scrollbar-thumb:hover {
+        background: #555;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        background-color: white;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+      th {
+        background-color: #4caf50;
+        color: white;
+        padding: 12px;
+        text-align: left;
+        font-weight: bold;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+      }
+      td {
+        padding: 10px 12px;
+        border-bottom: 1px solid #ddd;
+      }
+      tr:nth-child(even) {
+        background-color: #f9f9f9;
+      }
+      tr:hover {
+        background-color: #f1f1f1;
+      }
+      .logout-btn {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 10px 30px;
+        background-color: #f44336;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        z-index: 100;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      }
+      .logout-btn:hover {
+        background-color: #d32f2f;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      }
+    </style>
+  </head>
+  <body>
+    <h1 id="welcomeHeading">Welcome</h1>
+
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Sr.No</th>
+            <th>Name</th>
+            <th>DOB</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Address</th>
+            <th>City</th>
+            <th>State</th>
+            <th>Pincode</th>
+            <th>Hobby</th>
+            <th>Username</th>
+          </tr>
+        </thead>
+        <tbody id="userTableBody">
+          <tr>
+            <td>1</td>
+            <td>Arjun Sharma</td>
+            <td>05/15/1992</td>
+            <td>arjun.sharma.test@gmail.com</td>
+            <td>9876543210</td>
+            <td>12 Green Park</td>
+            <td>New Delhi</td>
+            <td>Delhi</td>
+            <td>110016</td>
+            <td>Cricket</td>
+            <td>arjun_test</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>Priya Nair</td>
+            <td>08/22/1995</td>
+            <td>priyanair.dev@gmail.com</td>
+            <td>9123456780</td>
+            <td>45 Lotus Lane</td>
+            <td>Kochi</td>
+            <td>Kerala</td>
+            <td>682011</td>
+            <td>Painting</td>
+            <td>priya_n</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>John Doe</td>
+            <td>12/03/1988</td>
+            <td>j.doe.testing@gmail.com</td>
+            <td>8877665544</td>
+            <td>101 Baker St</td>
+            <td>Mumbai</td>
+            <td>Maharashtra</td>
+            <td>400001</td>
+            <td>Reading</td>
+            <td>jdoe88</td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>Ananya Iyer</td>
+            <td>01/19/1998</td>
+            <td>ananya.iyer98@gmail.com</td>
+            <td>7766554433</td>
+            <td>88 Temple Rd</td>
+            <td>Chennai</td>
+            <td>Tamil Nadu</td>
+            <td>600004</td>
+            <td>Dancing</td>
+            <td>iyer_ana</td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td>Vikram Singh</td>
+            <td>06/30/1990</td>
+            <td>v.singh.work@gmail.com</td>
+            <td>9988776655</td>
+            <td>22 Hill View</td>
+            <td>Dehradun</td>
+            <td>Uttarakhand</td>
+            <td>248001</td>
+            <td>Hiking</td>
+            <td>v_singh</td>
+          </tr>
+          <tr>
+            <td>6</td>
+            <td>Sneha Patil</td>
+            <td>04/12/1994</td>
+            <td>sneha.patil.qa@gmail.com</td>
+            <td>9001122334</td>
+            <td>56 Lake Side</td>
+            <td>Pune</td>
+            <td>Maharashtra</td>
+            <td>411007</td>
+            <td>Cooking</td>
+            <td>sneha_p</td>
+          </tr>
+          <tr>
+            <td>7</td>
+            <td>Rahul Verma</td>
+            <td>11/25/1985</td>
+            <td>rahulv.testing@gmail.com</td>
+            <td>8122334455</td>
+            <td>14 Sector 15</td>
+            <td>Chandigarh</td>
+            <td>Punjab</td>
+            <td>160015</td>
+            <td>Gaming</td>
+            <td>rahulv</td>
+          </tr>
+          <tr>
+            <td>8</td>
+            <td>Meera Das</td>
+            <td>09/07/1997</td>
+            <td>meera.das.txt@gmail.com</td>
+            <td>7011223344</td>
+            <td>33 Salt Lake</td>
+            <td>Kolkata</td>
+            <td>West Bengal</td>
+            <td>700091</td>
+            <td>Photography</td>
+            <td>m_das97</td>
+          </tr>
+          <tr>
+            <td>9</td>
+            <td>Amit Patel</td>
+            <td>02/14/1993</td>
+            <td>amit.patel.dev@gmail.com</td>
+            <td>9223344556</td>
+            <td>102 Sky Tower</td>
+            <td>Ahmedabad</td>
+            <td>Gujarat</td>
+            <td>380001</td>
+            <td>Gardening</td>
+            <td>amit_patel</td>
+          </tr>
+          <tr>
+            <td>10</td>
+            <td>Sonia Khan</td>
+            <td>05/28/1991</td>
+            <td>soniakhan.test@gmail.com</td>
+            <td>8998877665</td>
+            <td>78 Rose Villa</td>
+            <td>Lucknow</td>
+            <td>Uttar Pradesh</td>
+            <td>226001</td>
+            <td>Music</td>
+            <td>sonia_k</td>
+          </tr>
+          <tr>
+            <td>11</td>
+            <td>Karthik R.</td>
+            <td>10/10/1989</td>
+            <td>karthik.r.qa@gmail.com</td>
+            <td>9445566778</td>
+            <td>210 MG Road</td>
+            <td>Bengaluru</td>
+            <td>Karnataka</td>
+            <td>560001</td>
+            <td>Cycling</td>
+            <td>karthik_r</td>
+          </tr>
+          <tr>
+            <td>12</td>
+            <td>Pooja Gupta</td>
+            <td>03/05/1996</td>
+            <td>pooja.g.tester@gmail.com</td>
+            <td>7556677889</td>
+            <td>90 Chandni Chowk</td>
+            <td>Jaipur</td>
+            <td>Rajasthan</td>
+            <td>302001</td>
+            <td>Sketching</td>
+            <td>pooja_g</td>
+          </tr>
+          <tr>
+            <td>13</td>
+            <td>Rohan Mehta</td>
+            <td>07/18/1992</td>
+            <td>rohan.mehta.v@gmail.com</td>
+            <td>8334455667</td>
+            <td>44 Sea View</td>
+            <td>Goa</td>
+            <td>Goa</td>
+            <td>403001</td>
+            <td>Swimming</td>
+            <td>rohan_m</td>
+          </tr>
+          <tr>
+            <td>14</td>
+            <td>Aditi Reddy</td>
+            <td>01/01/1999</td>
+            <td>aditi.reddy.99@gmail.com</td>
+            <td>9778899001</td>
+            <td>67 Jubilee Hills</td>
+            <td>Hyderabad</td>
+            <td>Telangana</td>
+            <td>500033</td>
+            <td>Writing</td>
+            <td>aditi_r</td>
+          </tr>
+          <tr>
+            <td>15</td>
+            <td>Sameer Ali</td>
+            <td>06/21/1987</td>
+            <td>sameer.ali.demo@gmail.com</td>
+            <td>8667788990</td>
+            <td>12 Pearl Apts</td>
+            <td>Bhopal</td>
+            <td>Madhya Pradesh</td>
+            <td>462001</td>
+            <td>Chess</td>
+            <td>sam_ali</td>
+          </tr>
+          <tr>
+            <td>16</td>
+            <td>Tanvi Shah</td>
+            <td>09/14/1995</td>
+            <td>tanvi.shah.dev@gmail.com</td>
+            <td>7889900112</td>
+            <td>19 Diamond Ave</td>
+            <td>Surat</td>
+            <td>Gujarat</td>
+            <td>395003</td>
+            <td>Yoga</td>
+            <td>tanvi_s</td>
+          </tr>
+          <tr>
+            <td>17</td>
+            <td>Manish Negi</td>
+            <td>12/09/1990</td>
+            <td>manish.negi.qa@gmail.com</td>
+            <td>9112233445</td>
+            <td>5 Mall Road</td>
+            <td>Shimla</td>
+            <td>Himachal</td>
+            <td>171001</td>
+            <td>Trekking</td>
+            <td>m_negi</td>
+          </tr>
+          <tr>
+            <td>18</td>
+            <td>Deepa Jha</td>
+            <td>11/11/1993</td>
+            <td>deepa.jha.test@gmail.com</td>
+            <td>8223344556</td>
+            <td>303 Kankarbagh</td>
+            <td>Patna</td>
+            <td>Bihar</td>
+            <td>800020</td>
+            <td>Reading</td>
+            <td>deepa_jha</td>
+          </tr>
+          <tr>
+            <td>19</td>
+            <td>Varun Joshi</td>
+            <td>04/04/1996</td>
+            <td>varunj.testing@gmail.com</td>
+            <td>7334455667</td>
+            <td>89 Civil Lines</td>
+            <td>Indore</td>
+            <td>Madhya Pradesh</td>
+            <td>452001</td>
+            <td>Singing</td>
+            <td>varun_j</td>
+          </tr>
+          <tr>
+            <td>20</td>
+            <td>Ishani Bose</td>
+            <td>02/27/1994</td>
+            <td>ishani.bose.qa@gmail.com</td>
+            <td>9443322110</td>
+            <td>15 Park Street</td>
+            <td>Kolkata</td>
+            <td>West Bengal</td>
+            <td>700016</td>
+            <td>Cooking</td>
+            <td>ishani_b</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <button onclick="logout()" class="logout-btn">Logout</button>
+
+    <script>
+      // ========================================
+      // DISPLAY LOGGED-IN USER'S NAME
+      // ========================================
+      window.addEventListener("DOMContentLoaded", function () {
+        const currentUser = localStorage.getItem("currentUser");
+        const welcomeHeading = document.getElementById("welcomeHeading");
+
+        if (currentUser) {
+          // Parse the user data
+          const userData = JSON.parse(currentUser);
+          // Display the user's name in the heading
+          welcomeHeading.textContent = `Welcome, ${userData.name}!`;
+        } else {
+          // If no user is logged in, redirect to login page
+          window.location.href = "login_form.html";
+        }
+
+        // ========================================
+        // LOAD AND DISPLAY ALL REGISTERED USERS
+        // ========================================
+        loadUsersToTable();
+      });
+
+      function loadUsersToTable() {
+        // Get the tbody element
+        const tableBody = document.getElementById("userTableBody");
+
+        // Get users from localStorage
+        const storedUsersString = localStorage.getItem("users");
+
+        if (!storedUsersString) {
+          // No new users registered yet - that's okay, we have 20 hardcoded ones
+          console.log("No registered users in localStorage yet");
+          return;
+        }
+
+        // Parse the users array from JSON
+        const users = JSON.parse(storedUsersString);
+
+        if (users.length === 0) {
+          console.log("No registered users yet");
+          return;
+        }
+
+        // Get all existing usernames from hardcoded rows to avoid duplicates
+        const existingRows = tableBody.querySelectorAll("tr");
+        const existingUsernames = new Set();
+
+        existingRows.forEach((row) => {
+          const usernameCell = row.cells[10]; // Username is in the 11th column (index 10)
+          if (usernameCell) {
+            existingUsernames.add(usernameCell.textContent.trim());
+          }
+        });
+
+        // Count existing rows for numbering
+        const existingRowCount = existingRows.length;
+
+        // Filter out users that already exist in the table
+        const newUsers = users.filter(
+          (user) => !existingUsernames.has(user.username),
+        );
+
+        if (newUsers.length === 0) {
+          console.log(
+            "No new unique users to add (all already exist in table)",
+          );
+          return;
+        }
+
+        // Append each newly registered user to the table
+        newUsers.forEach((user, index) => {
+          const row = document.createElement("tr");
+
+          // Format hobbies - join array into a string
+          const hobbiesDisplay =
+            Array.isArray(user.hobbies) && user.hobbies.length > 0
+              ? user.hobbies.join(", ")
+              : user.hobbies || "-";
+
+          row.innerHTML = `
+            <td>${existingRowCount + index + 1}</td>
+            <td>${user.name || "-"}</td>
+            <td>${user.dob || "-"}</td>
+            <td>${user.email || "-"}</td>
+            <td>${user.phone || "-"}</td>
+            <td>${user.address || "-"}</td>
+            <td>${user.city || "-"}</td>
+            <td>${user.state || "-"}</td>
+            <td>${user.pincode || "-"}</td>
+            <td>${hobbiesDisplay}</td>
+            <td>${user.username || "-"}</td>
+          `;
+
+          tableBody.appendChild(row);
+        });
+
+        console.log(
+          `✅ Added ${newUsers.length} new registered users to the table (after ${existingRowCount} existing users)`,
+        );
+      }
+
+      // ========================================
+      // LOGOUT FUNCTION
+      // Clears session data but KEEPS user accounts
+      // ========================================
+      function logout() {
+        // Clear only SESSION data (not the users array!)
+        localStorage.removeItem("isLoggedIn");
+        localStorage.removeItem("currentUser");
+        localStorage.removeItem("authType");
+        localStorage.removeItem("loginTime");
+
+        // NOTE: We do NOT remove 'users' - this keeps all accounts intact!
+        // This allows you to re-login with the same credentials
+
+        console.log("✅ Logged out successfully - User accounts preserved");
+
+        // Show confirmation message
+        alert("👋 Logged out successfully!\n\nYou can login again anytime.");
+
+        // Redirect to login page
+        window.location.href = "login_form.html";
+      }
+    </script>
+  </body>
+</html>

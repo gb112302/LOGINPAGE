@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login Form</title>
+    <title>Login Page</title>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
@@ -39,6 +39,7 @@
             value="user"
             required
             id="auth_user"
+            checked
           />
           <label for="auth_user">As User</label>
 
@@ -127,40 +128,124 @@
         input.addEventListener("blur", () => validateInput(input));
       });
 
+      // ========================================
+      // FORM SUBMISSION HANDLER
+      // This runs when the user clicks "Login"
+      // ========================================
       form.addEventListener("submit", function (e) {
+        // Prevent the form from submitting to a server (we're using localStorage)
         e.preventDefault();
 
+        // Track whether all validation passed
         let isFormValid = true;
 
-        // Validate text inputs
+        // STEP 1: Validate username and password fields
         [usernameInput, passwordInput].forEach((input) => {
           if (!validateInput(input)) {
             isFormValid = false;
           }
         });
 
-        // Validate radio buttons
+        // STEP 2: Check if user selected "As User" or "As Company"
         const authTypeInputs = document.getElementsByName("auth_type");
         let authTypeSelected = false;
+        let selectedAuthType = "";
+
+        // Loop through radio buttons to find which one is checked
         for (let i = 0; i < authTypeInputs.length; i++) {
           if (authTypeInputs[i].checked) {
             authTypeSelected = true;
+            selectedAuthType = authTypeInputs[i].value;
             break;
           }
         }
 
+        // Show error if no authentication type selected
         const authError = document.getElementById("auth-type-error");
         if (!authTypeSelected) {
-          authError.innerText = "Please select an authentication type";
+          authError.innerText =
+            "⚠️ Please select how you want to login (User or Company)";
           isFormValid = false;
         } else {
           authError.innerText = "";
         }
 
+        // STEP 3: If all validation passed, try to log in
         if (isFormValid) {
-          alert("Login successful!");
-          // Here you would typically submit the form to a server
-          // form.submit();
+          // ==============================================
+          // LOGIN PROCESS WITH LOCALSTORAGE
+          // ==============================================
+
+          // Get the list of registered users from browser storage
+          const storedUsersString = localStorage.getItem("users");
+
+          // Check if anyone has registered yet
+          if (!storedUsersString) {
+            alert(
+              "👋 No registered users found!\n\nPlease create an account first.",
+            );
+            window.location.href = "register_form.html";
+            return;
+          }
+
+          // Convert the stored JSON string back into a JavaScript array
+          const users = JSON.parse(storedUsersString);
+
+          // Get what the user typed
+          const enteredUsername = usernameInput.value.trim();
+          const enteredPassword = passwordInput.value;
+
+          // Search for a user with matching username AND password
+          const matchedUser = users.find(
+            (user) =>
+              user.username === enteredUsername &&
+              user.password === enteredPassword,
+          );
+
+          // CHECK RESULTS: Did we find a matching user?
+          if (matchedUser) {
+            // ✅ SUCCESS! Username and password match!
+            console.log("✅ Login successful for user:", matchedUser);
+
+            // Save login session information
+            localStorage.setItem("isLoggedIn", "true");
+            localStorage.setItem("currentUser", JSON.stringify(matchedUser));
+            localStorage.setItem("authType", selectedAuthType);
+            localStorage.setItem("loginTime", new Date().toISOString());
+
+            // Show personalized welcome message
+            alert(
+              `🎉 Login Successful!\n\nWelcome back, ${matchedUser.name}!\n\nAccount Type: ${selectedAuthType.toUpperCase()}`,
+            );
+
+            // Redirect to homepage
+            window.location.href = "homepage.html";
+          } else {
+            // ❌ FAILED! Either username or password is wrong
+
+            // Let's check which one is the problem
+            const userExists = users.find(
+              (user) => user.username === enteredUsername,
+            );
+
+            if (userExists) {
+              // Username exists, so password must be wrong
+              alert(
+                "🔒 Incorrect Password!\n\nPlease check your password and try again.",
+              );
+              setError(passwordInput, "Wrong password");
+            } else {
+              // Username doesn't exist
+              alert(
+                "❌ Username Not Found!\n\nThis username doesn't exist. Please check your username or register a new account.",
+              );
+              setError(usernameInput, "Username doesn't exist");
+            }
+          }
+
+          // ==============================================
+          // END OF LOGIN PROCESS
+          // ==============================================
         }
       });
     </script>

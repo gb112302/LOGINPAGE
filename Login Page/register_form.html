@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Register Form</title>
+    <title>Register Page</title>
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
@@ -16,10 +16,9 @@
             <input
               type="text"
               id="name"
-              minlength="3"
+              minlength="2"
             
-              placeholder="Enter your name"
-            />
+              placeholder="Enter your name">
             <span class="error-message">Name is required and must be at least 2 characters.</span>
         </div>
 
@@ -29,9 +28,8 @@
               type="date"
               id="dob"
               
-              placeholder="Enter your date of birth"
-            />
-            <span class="error-message">Date of Birth is required.</span>
+              placeholder="Enter your date of birth">
+              <span class="error-message">Date of Birth is required.</span>
         </div>
 
         <div class="input-group">
@@ -40,8 +38,7 @@
               type="text"
               id="age"
               placeholder="Age will be calculated automatically"
-              readonly
-            />
+              readonly>
         </div>
 
         <div class="input-group">
@@ -52,7 +49,7 @@
 
         <div class="input-group">
             <label for="phone">Phone:</label>
-            <input type="number" id="phone"  placeholder="Enter your phone" />
+            <input type="number" id="phone"  placeholder="Enter your phone">
             <span class="error-message">Phone number is required.</span>
         </div>
 
@@ -63,7 +60,7 @@
             name="person type"
             value="student"
             id="pt_student"
-            
+            checked
           />
           <label for="pt_student">Student</label>
           <input
@@ -80,7 +77,7 @@
 
         <label for="gender"><b>Gender:</b></label>
         <div class="radio-group">
-          <input type="radio" name="gender" value="male" id="g_male"  />
+          <input type="radio" name="gender" value="male" id="g_male" checked />
           <label for="g_male">Male</label>
           <input type="radio" name="gender" value="female" id="g_female" />
           <label for="g_female">Female</label>
@@ -209,7 +206,7 @@
         document.getElementById("age").value =
           `${years} Years, ${months} Months, ${days} Days`;
           
-          validateInput(dobInput); // Validate on change
+          validateInput(dobInput); // validate on change
       });
 
       function setError(input, message) {
@@ -249,7 +246,7 @@
                    setSuccess(input);
                }
           } else if (input === emailInput) {
-               const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+               const emailRegex = /^[^\s@]+@[^\@s]+\.[^\@s]+$/;
                if (!emailRegex.test(value)) {
                     setError(input, 'Provide a valid email address');
                     isValid = false;
@@ -360,27 +357,123 @@
           input.addEventListener('change', () => validateInput(input));
       });
 
+      // ========================================
+      // FORM SUBMISSION HANDLER
+      // This runs when the user clicks "Register"
+      // ========================================
       form.addEventListener('submit', function (e) {
+          // Prevent the form from submitting to a server
           e.preventDefault();
           
+          // Track if all form fields passed validation
           let isFormValid = true;
           
+          // List of all inputs that need to be validated
           const inputs = [
               nameInput, dobInput, emailInput, phoneInput, addressInput, 
               cityInput, stateInput, pincodeInput, usernameInput, 
               passwordInput, confirmPasswordInput,
-              personTypeInputs[0], genderInputs[0] // Pass one from each group to trigger validation
+              personTypeInputs[0], genderInputs[0] // Check one radio from each group
           ];
           
+          // Validate each input field
           inputs.forEach(input => {
               if(!validateInput(input)) {
                   isFormValid = false;
               }
           });
 
+          // If all validation passed, proceed with registration
           if (isFormValid) {
-               alert("Registration successful! Redirecting to login page...");
-               window.location.href = "login_form.html";
+               // ==============================================
+               // REGISTRATION PROCESS WITH LOCALSTORAGE
+               // ==============================================
+               
+               // STEP 1: Get existing users or create a new list
+               const existingUsersString = localStorage.getItem('users');
+               const users = existingUsersString ? JSON.parse(existingUsersString) : [];
+               
+               // STEP 2: Check if this username is already taken
+               const usernameExists = users.some(user => user.username === usernameInput.value.trim());
+               if (usernameExists) {
+                   alert('⚠️ Username Already Taken!\n\nThis username is already registered. Please choose a different username.');
+                   setError(usernameInput, 'Username already exists');
+                   return; // Stop the registration process
+               }
+               
+               // STEP 3: Collect all the form data
+               
+               // Get which person type was selected (Student/Employee/Both)
+               let selectedPersonType = '';
+               personTypeInputs.forEach(radio => {
+                   if (radio.checked) selectedPersonType = radio.value;
+               });
+               
+               // Get which gender was selected (Male/Female/Other)
+               let selectedGender = '';
+               genderInputs.forEach(radio => {
+                   if (radio.checked) selectedGender = radio.value;
+               });
+               
+               // Collect all hobbies entered by the user
+               const hobbyInputs = document.querySelectorAll('input[name="hobbies[]"]');
+               const hobbies = [];
+               hobbyInputs.forEach(input => {
+                   if (input.value.trim() !== '') {
+                       hobbies.push(input.value.trim());
+                   }
+               });
+               
+               // STEP 4: Create a complete user profile object
+               const newUser = {
+                   // Unique ID for this user (using timestamp)
+                   id: Date.now(),
+                   
+                   // Personal information
+                   name: nameInput.value.trim(),
+                   dob: dobInput.value,
+                   age: document.getElementById('age').value,
+                   email: emailInput.value.trim(),
+                   phone: phoneInput.value.trim(),
+                   
+                   // User type and preferences
+                   personType: selectedPersonType,
+                   gender: selectedGender,
+                   hobbies: hobbies,
+                   
+                   // Address details
+                   address: addressInput.value.trim(),
+                   city: cityInput.value.trim(),
+                   state: stateInput.value.trim(),
+                   pincode: pincodeInput.value.trim(),
+                   
+                   // Login credentials
+                   username: usernameInput.value.trim(),
+                   password: passwordInput.value, //
+                   
+                   // Timestamp of registration
+                   registeredAt: new Date().toISOString()
+               };
+               
+               // STEP 5: Add this new user to our list of users
+               users.push(newUser);
+               
+               // STEP 6: Save the updated list back to localStorage
+               // Convert JavaScript object to JSON string for storage
+               localStorage.setItem('users', JSON.stringify(users));
+               
+               // Log success to browser console (for developers/debugging)
+               console.log('✅ User registered successfully:', newUser);
+               console.log('📊 Total registered users:', users.length);
+               
+               // ==============================================
+               // END OF REGISTRATION PROCESS
+               // ==============================================
+               
+               // Show success message and redirect to login
+               alert(`🎉 Registration Successful!\n\nWelcome, ${newUser.name}!\n\nYou can now login with your credentials.`);
+               form.reset(); // Clear all form fields
+               window.location.href = "login_form.html"; // Go to login page
           }
       });
 
@@ -409,6 +502,27 @@
           const wrapper = button.parentElement;
           wrapper.remove();
       }
+
+      // ========================================
+      // RESET BUTTON - Clear Validation Errors
+      // ========================================
+      const resetButton = form.querySelector('input[type="reset"]');
+      resetButton.addEventListener('click', function() {
+          // Wait a tiny bit for the form to reset, then clear all validation states
+          setTimeout(function() {
+              // Remove all error and success classes from input groups
+              const allInputGroups = document.querySelectorAll('.input-group, .radio-group');
+              allInputGroups.forEach(group => {
+                  group.classList.remove('error', 'success');
+              });
+              
+              // Clear authentication type error
+              const authError = document.getElementById('auth-type-error');
+              if (authError) {
+                  authError.innerText = '';
+              }
+          }, 10); // Small delay to let the native reset happen first
+      });
     </script>
   </body>
 </html>
